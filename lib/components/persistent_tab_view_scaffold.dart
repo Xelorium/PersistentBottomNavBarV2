@@ -610,7 +610,7 @@ class NCSizeTransition extends AnimatedWidget {
 
   @override
   Widget build(BuildContext context) => Align(
-        alignment: Alignment.bottomCenter,
+        alignment: Alignment.topCenter,
         heightFactor: max(sizeFactor.value, 0),
         child: child,
       );
