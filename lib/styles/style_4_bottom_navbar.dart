@@ -20,14 +20,16 @@ class Style4BottomNavBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          IconTheme(
-            data: IconThemeData(
-              size: item.iconSize,
-              color: isSelected
-                  ? item.activeForegroundColor
-                  : item.inactiveForegroundColor,
+          Expanded(
+            child: IconTheme(
+              data: IconThemeData(
+                size: item.iconSize,
+                color: isSelected
+                    ? item.activeForegroundColor
+                    : item.inactiveForegroundColor,
+              ),
+              child: isSelected ? item.icon : item.inactiveIcon,
             ),
-            child: isSelected ? item.icon : item.inactiveIcon,
           ),
           if (item.title != null)
             FittedBox(
