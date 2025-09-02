@@ -200,8 +200,7 @@ class _PersistentTabViewScaffoldState extends State<PersistentTabViewScaffold>
                         )),
             ),
           ),
-          bottomNavigationBar:widget.hideNavigationBarDuration != 0
-              ? NCSizeTransition(
+          bottomNavigationBar: NCSizeTransition(
             sizeFactor: _animation,
             child: Padding(
               padding: widget.margin,
@@ -220,25 +219,6 @@ class _PersistentTabViewScaffoldState extends State<PersistentTabViewScaffold>
                   bottom: widget.avoidBottomPadding && widget.margin.bottom != 0,
                   child: widget.tabBar,
                 ),
-              ),
-            ),
-          )
-              : Padding(
-            padding: widget.margin,
-            child: MediaQuery(
-              data: MediaQuery.of(context).copyWith(
-                padding: !widget.avoidBottomPadding
-                // safespace should be ignored, so the bottom inset is removed before it could be applied by any safearea child (e.g. in DecoratedNavBar).
-                    ? EdgeInsets.zero
-                // The padding might have been consumed by the keyboard, so it is maintained here. Using maintainBottomViewPadding would require that in the DecoratedNavBar as well, but only if the bottom padding should not be avoided. So it is easier to just maintain the padding here.
-                    : MediaQuery.of(context).viewPadding,
-              ),
-              child: SafeArea(
-                top: false,
-                right: false,
-                left: false,
-                bottom: widget.avoidBottomPadding && widget.margin.bottom != 0,
-                child: widget.tabBar,
               ),
             ),
           ),
