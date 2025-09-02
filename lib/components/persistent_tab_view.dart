@@ -28,6 +28,7 @@ class PersistentTabView extends StatefulWidget {
     this.stateManagement = true,
     this.handleAndroidBackButtonPress = true,
     this.hideNavigationBar = false,
+    this.hideNavigationBarDuration = 300,
     this.hideOnScrollVelocity = 0,
     this.screenTransitionAnimation = const ScreenTransitionAnimation(),
     this.drawer,
@@ -55,6 +56,7 @@ class PersistentTabView extends StatefulWidget {
     this.hideOnScrollVelocity = 0,
     this.handleAndroidBackButtonPress = true,
     this.hideNavigationBar = false,
+    this.hideNavigationBarDuration = 300,
     this.drawer,
     this.drawerEdgeDragWidth,
     this.gestureNavigationEnabled = false,
@@ -157,6 +159,11 @@ class PersistentTabView extends StatefulWidget {
 
   /// Hides the navigation bar with a transition animation. Defaults to `false`.
   final bool hideNavigationBar;
+
+  /// Duration of the hide/show animation of the navigation bar. Defaults to `300` milliseconds.
+  /// Only has an effect if [hideNavigationBar] is set to `true` or [hideOnScrollVelocity] is greater than `0`.
+  /// This duration is also used when the keyboard is shown/hidden.
+  final int hideNavigationBarDuration;
 
   /// If set to `true`, you can additionally swipe left/right to change the tab. Defaults to `false`.
   final bool gestureNavigationEnabled;
@@ -312,6 +319,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
   Widget navigationBarWidget() => PersistentTabViewScaffold(
         controller: _controller,
         hideNavigationBar: widget.hideNavigationBar,
+        hideNavigationBarDuration: widget.hideNavigationBarDuration,
         hideOnScrollVelocity: widget.hideOnScrollVelocity,
         tabCount: widget.tabs.length,
         stateManagement: widget.stateManagement,
