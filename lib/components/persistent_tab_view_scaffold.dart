@@ -15,6 +15,7 @@ class PersistentTabViewScaffold extends StatefulWidget {
     this.gestureNavigationEnabled = false,
     this.screenTransitionAnimation = const ScreenTransitionAnimation(),
     this.hideNavigationBar = false,
+    this.hideNavigationBarDuration = 300,
     this.hideOnScrollVelocity = 0,
     this.navBarOverlap = const NavBarOverlap.full(),
     this.floatingActionButton,
@@ -47,6 +48,8 @@ class PersistentTabViewScaffold extends StatefulWidget {
 
   final bool hideNavigationBar;
 
+  final int hideNavigationBarDuration;
+
   final int hideOnScrollVelocity;
 
   final bool stateManagement;
@@ -76,7 +79,7 @@ class _PersistentTabViewScaffoldState extends State<PersistentTabViewScaffold>
   late final AnimationController _hideNavBarAnimationController =
       AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 500),
+    duration: Duration(milliseconds: widget.hideNavigationBarDuration),
   );
   late final Animation<double> _animation = Tween<double>(
     begin: 1,
@@ -197,26 +200,45 @@ class _PersistentTabViewScaffoldState extends State<PersistentTabViewScaffold>
                         )),
             ),
           ),
-          bottomNavigationBar: NCSizeTransition(
+          bottomNavigationBar:widget.hideNavigationBarDuration != 0
+              ? NCSizeTransition(
             sizeFactor: _animation,
             child: Padding(
               padding: widget.margin,
               child: MediaQuery(
                 data: MediaQuery.of(context).copyWith(
                   padding: !widget.avoidBottomPadding
-                      // safespace should be ignored, so the bottom inset is removed before it could be applied by any safearea child (e.g. in DecoratedNavBar).
+                  // safespace should be ignored, so the bottom inset is removed before it could be applied by any safearea child (e.g. in DecoratedNavBar).
                       ? EdgeInsets.zero
-                      // The padding might have been consumed by the keyboard, so it is maintained here. Using maintainBottomViewPadding would require that in the DecoratedNavBar as well, but only if the bottom padding should not be avoided. So it is easier to just maintain the padding here.
+                  // The padding might have been consumed by the keyboard, so it is maintained here. Using maintainBottomViewPadding would require that in the DecoratedNavBar as well, but only if the bottom padding should not be avoided. So it is easier to just maintain the padding here.
                       : MediaQuery.of(context).viewPadding,
                 ),
                 child: SafeArea(
                   top: false,
                   right: false,
                   left: false,
-                  bottom:
-                      widget.avoidBottomPadding && widget.margin.bottom != 0,
+                  bottom: widget.avoidBottomPadding && widget.margin.bottom != 0,
                   child: widget.tabBar,
                 ),
+              ),
+            ),
+          )
+              : Padding(
+            padding: widget.margin,
+            child: MediaQuery(
+              data: MediaQuery.of(context).copyWith(
+                padding: !widget.avoidBottomPadding
+                // safespace should be ignored, so the bottom inset is removed before it could be applied by any safearea child (e.g. in DecoratedNavBar).
+                    ? EdgeInsets.zero
+                // The padding might have been consumed by the keyboard, so it is maintained here. Using maintainBottomViewPadding would require that in the DecoratedNavBar as well, but only if the bottom padding should not be avoided. So it is easier to just maintain the padding here.
+                    : MediaQuery.of(context).viewPadding,
+              ),
+              child: SafeArea(
+                top: false,
+                right: false,
+                left: false,
+                bottom: widget.avoidBottomPadding && widget.margin.bottom != 0,
+                child: widget.tabBar,
               ),
             ),
           ),
